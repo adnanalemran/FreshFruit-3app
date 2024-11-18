@@ -5,14 +5,14 @@ const HomePage = () => {
     return (
         <div className="py-4">
             <Helmet>
-                <title>My Title</title>
+                <title>Home || Task </title>
                 <meta name="description" content="application" />
             </Helmet>
 
 
-            <ProductView />
+            {/* <ProductView /> */}
             <h1 className="text-3xl font-bold underline text-primary">
-
+                hello
             </h1>
         </div>
     );
