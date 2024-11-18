@@ -14,13 +14,13 @@ class PaymentController extends Controller
         $request->validate(['amount' => 'required|numeric']);
 
         try {
-
             Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-
+            // Convert the amount (e.g., 1.25 dollars) to cents (125)
+            $amountInCents = (int)($request->amount * 100);
 
             $paymentIntent = PaymentIntent::create([
-                'amount' => $request->amount, // Amount in cents
+                'amount' => $amountInCents, // Amount in cents
                 'currency' => 'usd',
                 'payment_method_types' => ['card'],
             ]);
@@ -30,6 +30,7 @@ class PaymentController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
     public function createOrder(Request $request)
     {
         $validatedData = $request->validate([
