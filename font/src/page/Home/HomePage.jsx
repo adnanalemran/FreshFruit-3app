@@ -6,7 +6,7 @@ const HomePage = () => {
     return (
         <div className="py-4">
             <Helmet>
-                <title>Home || Task </title>
+                <title>Home || FreshFruit </title>
                 <meta name="description" content="application" />
             </Helmet>
 

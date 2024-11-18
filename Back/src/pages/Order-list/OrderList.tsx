@@ -1,118 +1,74 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import http from "../../utils/http";
-import { ImageUrl } from '../../utils/ImageUrl';
-import Swal from "sweetalert2"; // Import SweetAlert2
+
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
 const OrderList = () => {
-    const queryClient = useQueryClient();
-
-    const { data: products = [], isLoading, isError, error } = useQuery({
-        queryKey: ["product"],
+    const { data: ordersData, isLoading, isError, error } = useQuery({
+        queryKey: ["getAllOrders"],
         queryFn: async () => {
-            const res = await http.get("/product");
-            return res.data.data; // Ensure your API response has a structure like { data: { data: [...] } }
+            const res = await http.get("/getAllOrders");
+            return res.data.orders; // Adjust based on your API response structure
         },
     });
-
-    const deleteMutation = useMutation({
-        mutationFn: async (productId: string | number) => {
-            return http.delete(`/product/${productId}`);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product"] });
-            queryClient.invalidateQueries({ queryKey: ["product-delete-list"] });
-            Swal.fire("Deleted!", "The product has been deleted.", "success"); // SweetAlert2 success notification
-        },
-        onError: (e: any) => {
-            const errorMessage = e?.response?.data?.error || "Something went wrong";
-            Swal.fire("Error", errorMessage, "error"); // SweetAlert2 error notification
-        },
-    });
-
-    const handleDelete = (productId: string | number) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "This Going On recycle been and its not show Website !",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#dc3545", // Red for danger
-            cancelButtonColor: "#6c757d", // Gray for cancel
-            background: "#f8f9fa", // Light background
-            color: "#212529", // Dark text color
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteMutation.mutate(productId);
-            }
-        });
-    };
 
     if (isLoading) {
-        return <div>Loading...</div>; // Display a loading message or spinner
+        return <div>Loading...</div>;
     }
 
     if (isError) {
-        return <div>Error: {error?.message}</div>; // Display an error message if there's an issue with the query
+        return <div>Error: {error?.message || "Something went wrong!"}</div>;
     }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">Order List</h4>
+            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+                Order List
+            </h4>
 
-            <div className="flex flex-col">
-                <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
-                    <div className="p-2.5 xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Image</h5>
-                    </div>
-                    <div className="p-2.5 xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Name</h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Price</h5>
-                    </div>
-                    <div className="p-2.5 text-center xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Description</h5>
-                    </div>
-
-                    <div className="hidden p-2.5 text-center sm:block xl:p-5">
-                        <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
-                    </div>
-                </div>
-
-                {products.map((product: { id: Key | null | undefined; image: any; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; description: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }, index: number) => (
-                    <div
-                        className={`grid grid-cols-3 sm:grid-cols-5 ${index === products.length - 1 ? "" : "border-b border-stroke dark:border-strokedark"
-                            }`}
-                        key={product.id} // Ensure that you have a unique identifier for each product
-                    >
-                        <div className="flex items-center gap-3 p-2.5 xl:p-5">
-                            <div className="flex-shrink-0">
-                                <img className="w-16 rounded-full" src={`${ImageUrl}${product?.image}`} alt="Product" />
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3 p-2.5 xl:p-5">
-                            <p className="hidden text-black dark:text-white sm:block font-bold">{product?.name}</p>
-                        </div>
-
-                        <div className="flex items-center justify-center p-2.5 xl:p-5">
-                            <p className="text-black dark:text-white">${product?.price}</p>
-                        </div>
-
-                        <div className="flex items-center justify-center p-2.5 xl:p-5">
-                            <p className="text-meta-3">{typeof product?.description === 'string' ? product.description.split(' ').slice(0, 10).join(' ') : ''}</p>
-                        </div>
-
-                        <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                            <button onClick={() => product.id && handleDelete(product.id)} className="  text-danger">Delete</button>
-                        </div>
-                    </div>
-                ))}
+            <div className="overflow-x-auto max-h-[calc(100vh-250px)]">
+                {/* Table */}
+                <table className="min-w-full table-auto">
+                    <thead className="sticky top-0 bg-gray-2 dark:bg-meta-4 z-10">
+                        <tr>
+                            <th className="p-2.5 xl:p-5 text-left text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Client Name</th>
+                            <th className="p-2.5 xl:p-5 text-left text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Client Email</th>
+                            <th className="p-2.5 xl:p-5 text-center text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Total Bill</th>
+                            <th className="p-2.5 xl:p-5 text-center text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Client Address</th>
+                            <th className="p-2.5 xl:p-5 text-center text-sm font-medium uppercase xsm:text-base  whitespace-nowrap">Order Date</th>
+                            <th className="p-2.5 xl:p-5 text-center text-sm font-medium uppercase xsm:text-base whitespace-nowrap">Payment Id</th>
+                            <th className="p-2.5 xl:p-5 text-center text-sm font-medium uppercase xsm:text-base whitespace-nowrap ">Product List</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Data Rows */}
+                        {ordersData.map((order: { id: Key | null | undefined; client_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; client_email: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; total_bill: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; client_address: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; created_at: string | number | Date; stripe_payment_id: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; products: string; }) => (
+                            <tr key={order.id} className="border-b border-stroke dark:border-strokedark">
+                                <td className="p-2.5 xl:p-5 text-sm text-black dark:text-white">{order.client_name}</td>
+                                <td className="p-2.5 xl:p-5 text-sm text-black dark:text-white">{order.client_email}</td>
+                                <td className="p-2.5 xl:p-5 text-center text-sm text-black dark:text-white">${order.total_bill}</td>
+                                <td className="p-2.5 xl:p-5 text-center text-sm text-black dark:text-white">{order.client_address}</td>
+                                <td className="p-2.5 xl:p-5 text-center text-sm text-black dark:text-white">
+                                    {new Date(order.created_at).toLocaleDateString()}
+                                </td>
+                                <td className="p-2.5 xl:p-5 text-center text-sm text-black dark:text-white">{order.stripe_payment_id}</td>
+                                <td className="p-2.5 xl:p-5 text-center text-sm text-black dark:text-white">
+                                    {/* Products List */}
+                                    <ul className="text-sm text-black dark:text-white">
+                                        {JSON.parse(order.products).map((product: { id: Key; name: string; price: number; quantity: number }) => (
+                                            <li key={product.id}>
+                                                {product.name} - ${product.price} x {product.quantity}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
 };
-
 
 export default OrderList;
