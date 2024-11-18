@@ -19,10 +19,12 @@ const OrderAndPayment = () => {
     }, []);
 
     return (
-        <div>
-            <OrderSummary userDetails={userDetails} setUserDetails={setUserDetails} cart={cart} />
+        <div className="flex w-full ">
 
-            <PaymentForm userDetails={userDetails} cart={cart} />
+            <div className="lg:w-1/2"> <OrderSummary userDetails={userDetails} setUserDetails={setUserDetails} cart={cart} />
+            </div>
+            <div className="lg:w-1/2">
+                <PaymentForm userDetails={userDetails} cart={cart} /></div>
         </div>
     );
 };

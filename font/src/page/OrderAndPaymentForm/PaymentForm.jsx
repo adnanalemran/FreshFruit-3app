@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { useStripe, useElements, CardElement, Elements } from "@stripe/react-stripe-js";
 import Swal from "sweetalert2";
-
 import { clearCart } from "../../redux/cartSlice";
 import { loadStripe } from "@stripe/stripe-js";
 import http from "../../utils/http";
@@ -19,10 +18,21 @@ const CheckoutForm = ({ userDetails, cart, onSuccess }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const isUserInfoValid = () => {
+        // Check if name, email, and address are provided
+        return userDetails?.name && userDetails?.email && userDetails?.address;
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!stripe || !elements) {
+            return;
+        }
+
+        // Check if user information is complete
+        if (!isUserInfoValid()) {
+            setErrorMessage("Please provide all user details (Name, Email, Address).");
             return;
         }
 
@@ -80,7 +90,7 @@ const CheckoutForm = ({ userDetails, cart, onSuccess }) => {
     };
 
     return (
-        <form className="bg-neutral-100 p-4 pb-6 rounded-xl shadow-xl m-4 my-8" onSubmit={handleSubmit}>
+        <form className=" bg-slate-100 p-4 pb-6 rounded-xl   m-4 my-8" onSubmit={handleSubmit}>
             <h3 className="text-lg font-semibold text-neutral-700 pt-4">Payment Information</h3>
             <hr className="my-4 border-neutral-200" />
             <label className="block text-sm text-neutral-500">Card info:</label>
@@ -90,7 +100,7 @@ const CheckoutForm = ({ userDetails, cart, onSuccess }) => {
 
             <button
                 type="submit"
-                className={`block w-full px-5 py-2.5 rounded-lg text-sm text-white ${loading ? "bg-neutral-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700 active:scale-95"}`}
+                className={`block w-full px-5 py-2.5 rounded-lg text-sm text-white ${loading ? "bg-neutral-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 active:scale-95"}`}
                 disabled={!stripe || loading}
             >
                 {loading ? "Processing..." : "Pay Now"}
@@ -125,7 +135,6 @@ const PaymentForm = ({ userDetails, cart }) => {
     );
 };
 
-
 CheckoutForm.propTypes = {
     userDetails: PropTypes.object.isRequired,
     cart: PropTypes.arrayOf(
@@ -136,7 +145,6 @@ CheckoutForm.propTypes = {
     ).isRequired,
     onSuccess: PropTypes.func.isRequired,
 };
-
 
 PaymentForm.propTypes = {
     userDetails: PropTypes.object.isRequired,

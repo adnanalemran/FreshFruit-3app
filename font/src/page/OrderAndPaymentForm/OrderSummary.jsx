@@ -12,7 +12,7 @@ const OrderSummary = ({ userDetails, setUserDetails, cart }) => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto p-6">
+        <div className="  mx-auto p-6">
             <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Order Summary</h2>
 
             {/* User Information */}
