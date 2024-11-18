@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "../../../utils/http";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../redux/cartSlice";
 import { ImageUrl } from '../../../utils/ImageUrl';
 import Cart from "./Cart";
 
@@ -13,20 +14,10 @@ const ProductView = () => {
         },
     });
 
-    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart') || '[]'));
+    const dispatch = useDispatch();
 
     const handleAddToCart = (product) => {
-        const updatedCart = [...cart];
-        const existingProduct = updatedCart.find(item => item.id === product.id);
-
-        if (existingProduct) {
-            existingProduct.quantity += 1;
-        } else {
-            updatedCart.push({ ...product, quantity: 1 });
-        }
-
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-        setCart(updatedCart); // Update state after updating localStorage
+        dispatch(addToCart(product)); // Dispatch action to add product to cart
     };
 
     if (isLoading) {

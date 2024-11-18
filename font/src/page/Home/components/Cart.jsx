@@ -1,40 +1,21 @@
-import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart, increaseQuantity, decreaseQuantity } from "../../../redux/cartSlice";
 import { ImageUrl } from '../../../utils/ImageUrl';
 
 const Cart = () => {
-    const [cart, setCart] = useState([]);
-
-    useEffect(() => {
-        // Get cart data from localStorage when the component is mounted
-        const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-        if (!Array.isArray(storedCart)) {
-            localStorage.setItem("cart", JSON.stringify([])); // Reset cart if invalid
-        }
-        setCart(storedCart);
-    }, []);
+    const cart = useSelector(state => state.cart); // Get cart from Redux state
+    const dispatch = useDispatch();
 
     const handleIncreaseQuantity = (productId) => {
-        const updatedCart = cart.map((item) =>
-            item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-        );
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(increaseQuantity(productId)); // Dispatch action to increase quantity
     };
 
     const handleDecreaseQuantity = (productId) => {
-        const updatedCart = cart.map((item) =>
-            item.id === productId && item.quantity > 1
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-        );
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(decreaseQuantity(productId)); // Dispatch action to decrease quantity
     };
 
     const handleRemoveFromCart = (productId) => {
-        const updatedCart = cart.filter((item) => item.id !== productId);
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        dispatch(removeFromCart(productId)); // Dispatch action to remove product from cart
     };
 
     const handleCheckout = () => {
