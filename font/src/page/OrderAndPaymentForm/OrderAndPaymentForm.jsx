@@ -22,7 +22,7 @@ const OrderAndPayment = () => {
         <div>
             <OrderSummary userDetails={userDetails} setUserDetails={setUserDetails} cart={cart} />
 
-            {/* <PaymentForm userDetails={userDetails} cart={cart} /> */}
+            <PaymentForm userDetails={userDetails} cart={cart} />
         </div>
     );
 };
