@@ -16,6 +16,9 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
+import ProductList from './pages/Product/ProductList';
+import AddProduct from './pages/Product/AddProduct';
+import OrderList from './pages/Order-list/OrderList';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,15 +46,7 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Calendar />
-            </>
-          }
-        />
+
         <Route
           path="/profile"
           element={
@@ -62,11 +57,29 @@ function App() {
           }
         />
         <Route
-          path="/forms/form-elements"
+          path="/product/list"
           element={
             <>
-              <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <FormElements />
+              <PageTitle title="Product list  | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <ProductList />
+            </>
+          }
+        />
+        <Route
+          path="/product/add"
+          element={
+            <>
+              <PageTitle title="Product list  | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <AddProduct />
+            </>
+          }
+        />
+        <Route
+          path="/order-list"
+          element={
+            <>
+              <PageTitle title="Product list  | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <OrderList />
             </>
           }
         />

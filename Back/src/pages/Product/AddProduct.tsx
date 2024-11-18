@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const AddProduct = () => {
     return (
@@ -6,57 +6,57 @@ const AddProduct = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Sign Up Form
+                        Add Product
                     </h3>
                 </div>
-                <form action="#">
+                <form >
                     <div className="p-6.5">
                         <div className="mb-4.5">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Name
+                                Product Name
                             </label>
                             <input
                                 type="text"
-                                placeholder="Enter your full name"
+                                placeholder="Enter Product name "
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
                         <div className="mb-4.5">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Email
+                                Product Price
                             </label>
                             <input
-                                type="email"
-                                placeholder="Enter your email address"
+                                type="Number"
+
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
                         <div className="mb-4.5">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Password
+                                Product Description
                             </label>
                             <input
-                                type="password"
-                                placeholder="Enter password"
+                                type="text"
+
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
                         <div className="mb-5.5">
                             <label className="mb-2.5 block text-black dark:text-white">
-                                Re-type Password
+                                Product Image
                             </label>
                             <input
-                                type="password"
-                                placeholder="Re-enter password"
+                                type="file"
+
                                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
                         </div>
 
                         <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                            Sign Up
+                            Add Product
                         </button>
                     </div>
                 </form>
