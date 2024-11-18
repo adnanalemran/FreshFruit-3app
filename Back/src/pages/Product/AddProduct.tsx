@@ -104,7 +104,7 @@ const AddProduct = () => {
                         {/* Product Price */}
                         <div className="mb-4.5">
                             <label htmlFor="price" className="mb-2.5 block text-black dark:text-white">
-                                Product Price
+                                Product Price ($)
                             </label>
                             <input
                                 id="price"
