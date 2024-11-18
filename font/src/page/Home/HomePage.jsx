@@ -1,6 +1,7 @@
 
 import { Helmet } from "react-helmet";
 import ProductView from "./components/ProductView";
+import Cart from "./components/Cart";
 const HomePage = () => {
     return (
         <div className="py-4">
@@ -9,11 +10,12 @@ const HomePage = () => {
                 <meta name="description" content="application" />
             </Helmet>
 
+            <div className="flex min-h-[100vh]  ">
+                <ProductView />
+                <Cart />
+            </div>
 
-            <ProductView />
-            <h1 className="text-3xl font-bold underline text-primary">
-                hello
-            </h1>
+
         </div>
     );
 };

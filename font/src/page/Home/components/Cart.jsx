@@ -1,26 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, increaseQuantity, decreaseQuantity } from "../../../redux/cartSlice";
 import { ImageUrl } from '../../../utils/ImageUrl';
+import { Link } from "react-router-dom";
 
 const Cart = () => {
-    const cart = useSelector(state => state.cart); // Get cart from Redux state
+    const cart = useSelector(state => state.cart); //   Redux state
     const dispatch = useDispatch();
 
     const handleIncreaseQuantity = (productId) => {
-        dispatch(increaseQuantity(productId)); // Dispatch action to increase quantity
+        dispatch(increaseQuantity(productId)); //   increase quantity
     };
 
     const handleDecreaseQuantity = (productId) => {
-        dispatch(decreaseQuantity(productId)); // Dispatch action to decrease quantity
+        dispatch(decreaseQuantity(productId)); //   decrease quantity
     };
 
     const handleRemoveFromCart = (productId) => {
-        dispatch(removeFromCart(productId)); // Dispatch action to remove product from cart
+        dispatch(removeFromCart(productId)); //  remove product from cart
     };
 
-    const handleCheckout = () => {
-        // Redirect to Stripe checkout or payment page
-    };
+
 
     return (
         <div className="max-w-7xl mx-auto p-6">
@@ -73,12 +72,14 @@ const Cart = () => {
             )}
 
             <div className="mt-6 flex justify-end">
-                <button
-                    onClick={handleCheckout}
+                <Link to='/order-and-payment'><button
+
                     className="py-2 px-6 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300"
                 >
                     Proceed to Checkout
                 </button>
+                </Link>
+
             </div>
         </div>
     );

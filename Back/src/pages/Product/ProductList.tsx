@@ -105,7 +105,7 @@ const ProductList = () => {
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                            <button onClick={() => product.id && handleDelete(product.id)} className="  text-danger">Delete</button>
+                            <button onClick={() => product.id && handleDelete(product.id as string | number)} className="  text-danger">Delete</button>
                         </div>
                     </div>
                 ))}

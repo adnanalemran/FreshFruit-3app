@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,6 @@ Route::prefix('v1')->group(function () {
         Route::get('/getUser/{id}', [AuthController::class, 'getUser']);
         Route::get('/getAllUsers', [AuthController::class, 'getAllUsers']);
     });
+    Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+    Route::post('/create-order', [PaymentController::class, 'createOrder']);
 });

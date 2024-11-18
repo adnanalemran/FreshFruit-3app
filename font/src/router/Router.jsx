@@ -4,6 +4,7 @@ import HomePage from "../page/Home/HomePage";
 
 import ErrorPage from "../components/common/ErrorPage";
 import LandingLayout from "../layout/LandingLayout";
+import OrderAndPaymentForm from "../page/OrderAndPaymentForm/OrderAndPaymentForm";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,9 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      }, {
+        path: "/order-and-payment",
+        element: <OrderAndPaymentForm />,
       }
     ],
   },
