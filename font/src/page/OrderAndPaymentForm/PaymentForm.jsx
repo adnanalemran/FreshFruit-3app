@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { useStripe, useElements, CardElement, Elements } from "@stripe/react-stripe-js";
 import Swal from "sweetalert2";
-import axios from "axios";
+
 import { clearCart } from "../../redux/cartSlice";
 import { loadStripe } from "@stripe/stripe-js";
+import http from "../../utils/http";
 
 // Initialize Stripe with your public key
 const stripePromise = loadStripe("pk_test_51Q1N7oGuW2mtyiOD9FAD9tAqcK093QCqtMb8x4kCkolyaDQe3iTgFEa0rLFaqVZVpSeLjDxh3hqDgV14HcqTH77400MI2tctAG");
@@ -41,7 +42,7 @@ const CheckoutForm = ({ userDetails, cart, onSuccess }) => {
         try {
             const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0) * 100;
 
-            const response = await axios.post("/api/create-payment-intent", { amount: totalAmount });
+            const response = await http.post("/create-payment-intent", { amount: totalAmount });
 
             const { clientSecret } = response.data;
 
@@ -60,7 +61,7 @@ const CheckoutForm = ({ userDetails, cart, onSuccess }) => {
             }
 
             if (paymentIntent.status === "succeeded") {
-                const orderResponse = await axios.post("/api/create-order", {
+                const orderResponse = await http.post("/create-order", {
                     products: cart,
                     userDetails,
                     paymentIntentId: paymentIntent.id,

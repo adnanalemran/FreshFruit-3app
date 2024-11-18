@@ -37,4 +37,5 @@ Route::prefix('v1')->group(function () {
     });
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
     Route::post('/create-order', [PaymentController::class, 'createOrder']);
+    Route::get('/getAllOrders', [PaymentController::class, 'getAllOrders']);
 });

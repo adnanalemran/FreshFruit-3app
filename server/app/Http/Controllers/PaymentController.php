@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -10,50 +11,60 @@ class PaymentController extends Controller
 {
     public function createPaymentIntent(Request $request)
     {
-        // Get the amount from the frontend (this would typically be dynamic based on the cart total)
-        $amount = $request->amount; // Example: $request->amount should be in cents, e.g., $50 = 5000 cents
-
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $request->validate(['amount' => 'required|numeric']);
 
         try {
+
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+
+
             $paymentIntent = PaymentIntent::create([
-                'amount' => $amount,
+                'amount' => $request->amount, // Amount in cents
                 'currency' => 'usd',
+                'payment_method_types' => ['card'],
             ]);
 
-            return response()->json(['clientSecret' => $paymentIntent->client_secret]);
+            return response()->json(['clientSecret' => $paymentIntent->client_secret], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
-    // Endpoint to save the order to the database after payment
     public function createOrder(Request $request)
     {
-        $userDetails = $request->userDetails;
-        $products = $request->products;
-        $paymentIntentId = $request->paymentIntentId;
-
-        // Save the order to the database (you need to create an Order model and migration)
-        // Example:
-        $order = Order::create([
-            'user_details' => json_encode($userDetails),
-            'payment_intent_id' => $paymentIntentId,
-            'total_amount' => $request->totalAmount,
-            // Save product details
+        $validatedData = $request->validate([
+            'products' => 'required|array',
+            'userDetails' => 'required|array',
+            'paymentIntentId' => 'required|string',
+            'totalAmount' => 'required|numeric',
         ]);
 
-        // You can also save the cart items in an order_items table if necessary
-        // Example:
-        foreach ($products as $product) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product['id'],
-                'quantity' => $product['quantity'],
-                'price' => $product['price'],
-            ]);
-        }
+        try {
+            $order = new Order();
+            $order->client_name = $validatedData['userDetails']['name'];
+            $order->client_email = $validatedData['userDetails']['email'];
+            $order->client_address = $validatedData['userDetails']['address'];
+            $order->total_bill = $validatedData['totalAmount'];
+            $order->products = json_encode($validatedData['products']);
+            $order->stripe_payment_id = $validatedData['paymentIntentId'];
+            $order->payment_status = 'paid';
+            $order->save();
 
-        return response()->json(['success' => true, 'order' => $order]);
+            return response()->json(['success' => true, 'message' => 'Order created successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+    public function getAllOrders()
+    {
+        try {
+            // Fetch all orders
+            $orders = Order::all();
+
+            // Return the orders as JSON
+            return response()->json(['success' => true, 'orders' => $orders], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }
