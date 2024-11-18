@@ -3,6 +3,7 @@ import http from "../../../utils/http";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/cartSlice";
 import { ImageUrl } from '../../../utils/ImageUrl';
+import toast from 'react-hot-toast';
 
 const ProductView = () => {
     const { data: products = [], isLoading, isError, error } = useQuery({
@@ -17,6 +18,7 @@ const ProductView = () => {
 
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
+        toast.success(`${product.name} added to cart!`);
     };
 
     return (
