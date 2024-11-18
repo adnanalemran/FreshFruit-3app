@@ -5,10 +5,10 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
+
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
+
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -19,6 +19,7 @@ import DefaultLayout from './layout/DefaultLayout';
 import ProductList from './pages/Product/ProductList';
 import AddProduct from './pages/Product/AddProduct';
 import OrderList from './pages/Order-list/OrderList';
+import DeleteProductList from './pages/Product/DeleteProductList';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -71,6 +72,14 @@ function App() {
             <>
               <PageTitle title="Product list  | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <AddProduct />
+            </>
+          }
+        /> <Route
+          path="/product/DeleteProductList"
+          element={
+            <>
+              <PageTitle title="Product list  | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <DeleteProductList />
             </>
           }
         />

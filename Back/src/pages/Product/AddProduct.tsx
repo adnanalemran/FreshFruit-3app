@@ -1,9 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import http from "../../utils/http";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AddProduct = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate(); // Initialize useNavigate hook for navigation
+
     const [formData, setFormData] = useState({
         name: "",
         price: "",
@@ -11,6 +15,7 @@ const AddProduct = () => {
         status: 1,
         image: null,
     });
+
     const [fileError, setFileError] = useState<string | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,20 +44,32 @@ const AddProduct = () => {
 
     const { mutate, status } = useMutation({
         mutationFn: async (newItem: FormData) => {
-            return http.post("/add-product", newItem, {
+            return http.post("/product/store", newItem, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["brand"] });
-            alert("Item added successfully!"); // Replace `toast` with `alert` for demo
+            queryClient.invalidateQueries({ queryKey: ["product"] });
+            Swal.fire({
+                title: "Success!",
+                text: "Product added successfully!",
+                icon: "success",
+                confirmButtonText: "OK",
+            }).then(() => {
+                navigate("/product/list");
+            });
             resetForm();
         },
         onError: (e: any) => {
             const errorMessage = e?.response?.data?.error || "Something went wrong";
-            alert(errorMessage); // Replace `toast` with `alert` for demo
+            Swal.fire({
+                title: "Error",
+                text: errorMessage,
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         },
     });
 

@@ -290,6 +290,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             >
                               Product List
                             </NavLink>
+                          </li> <li>
+                            <NavLink
+                              to="product/DeleteProductList"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Recycle Bin
+                            </NavLink>
                           </li>
                         </ul>
                       </div>

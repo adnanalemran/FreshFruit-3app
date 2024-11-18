@@ -4,13 +4,13 @@ import { ImageUrl } from '../../utils/ImageUrl';
 import Swal from "sweetalert2"; // Import SweetAlert2
 import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
-const ProductList = () => {
+const DeleteProductList = () => {
     const queryClient = useQueryClient();
 
     const { data: products = [], isLoading, isError, error } = useQuery({
-        queryKey: ["product"],
+        queryKey: ["product-delete-list"],
         queryFn: async () => {
-            const res = await http.get("/product");
+            const res = await http.get("/product/deleteList");
             return res.data.data; // Ensure your API response has a structure like { data: { data: [...] } }
         },
     });
@@ -33,10 +33,10 @@ const ProductList = () => {
     const handleDelete = (productId: string | number) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "This Going On recycle been and its not show Website !",
+            text: "This Going On active product !",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Yes, Restore it!",
             cancelButtonText: "Cancel",
             confirmButtonColor: "#dc3545", // Red for danger
             cancelButtonColor: "#6c757d", // Gray for cancel
@@ -59,7 +59,7 @@ const ProductList = () => {
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">Product List</h4>
+            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">Recycle Bin (Product)</h4>
 
             <div className="flex flex-col">
                 <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
@@ -105,7 +105,7 @@ const ProductList = () => {
                         </div>
 
                         <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                            <button onClick={() => product.id && handleDelete(product.id)} className="  text-danger">Delete</button>
+                            <button onClick={() => product.id && handleDelete(product.id)} className="text-meta-5">Restore</button>
                         </div>
                     </div>
                 ))}
@@ -114,4 +114,7 @@ const ProductList = () => {
     );
 };
 
-export default ProductList;
+
+
+
+export default DeleteProductList;
