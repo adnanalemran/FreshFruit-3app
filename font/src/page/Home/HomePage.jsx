@@ -10,9 +10,16 @@ const HomePage = () => {
                 <meta name="description" content="application" />
             </Helmet>
 
-            <div className="flex min-h-[100vh]  ">
-                <ProductView />
-                <Cart />
+            <div className="grid gap-4 grid-cols-12 min-h-[100vh]  w-full lg:px-6 px-4">
+                <div className=" col-span-8 ">
+                    <ProductView />
+                </div>
+                <div className="col-span-4 ">
+                    <Cart />
+                </div>
+
+
+
             </div>
 
 
