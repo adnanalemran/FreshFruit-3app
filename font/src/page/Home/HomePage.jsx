@@ -10,7 +10,7 @@ const HomePage = () => {
             </Helmet>
 
 
-            {/* <ProductView /> */}
+            <ProductView />
             <h1 className="text-3xl font-bold underline text-primary">
                 hello
             </h1>
